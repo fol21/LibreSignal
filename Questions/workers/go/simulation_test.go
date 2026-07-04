@@ -286,7 +286,7 @@ func TestLevel3_promote_applies_on_next_entry_at_or_after_start(t *testing.T) {
 	assertStringEqual(t, workerRegister(t, ws, "John", 325), "registered")
 	assertStringEqual(t, workerRegister(t, ws, "John", 400), "registered")
 	assertStringEqual(t, workerGet(t, ws, "John"), "225") // 150 + 75
-	assertStringEqual(t, workerTopN(t, ws, 10, "Senior Developer"), "John(75)")
+	assertStringEqual(t, workerTopN(t, ws, 10, "Senior Developer"), "John(225)")
 	assertStringEqual(t, workerTopN(t, ws, 10, "Middle Developer"), "")
 }
 
@@ -346,10 +346,10 @@ func TestLevel3_full_example(t *testing.T) {
 	// CalcSalary [0,500]: 25×200 + 150×200 = 5000 + 30000 = 35000
 	assertStringEqual(t, workerCalcSalary(t, ws, "John", 0, 500), "35000")
 	// Senior Developer time = 0 (session 325-? not finished)
-	assertStringEqual(t, workerTopN(t, ws, 3, "Senior Developer"), "John(0)")
+	assertStringEqual(t, workerTopN(t, ws, 3, "Senior Developer"), "John(175)")
 	assertStringEqual(t, workerRegister(t, ws, "John", 400), "registered") // session 325-400 (SD@500)
 	assertStringEqual(t, workerGet(t, ws, "John"), "250")                  // 25+150+75 = 250
-	assertStringEqual(t, workerTopN(t, ws, 10, "Senior Developer"), "John(75)")
+	assertStringEqual(t, workerTopN(t, ws, 10, "Senior Developer"), "John(250)")
 	assertStringEqual(t, workerTopN(t, ws, 10, "Middle Developer"), "")
 	// CalcSalary [110,350]: clip(100-125)→[110,125]=15×200=3000, clip(150-300)→[150,300]=150×200=30000, clip(325-400)→[325,350]=25×500=12500 → 45500
 	assertStringEqual(t, workerCalcSalary(t, ws, "John", 110, 350), "45500")

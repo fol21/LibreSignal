@@ -8,3 +8,6 @@
 **/*.exe
 **/go.mod
 **/go.sum
+
+# Vscode
+.vscode
